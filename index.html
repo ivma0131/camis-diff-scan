@@ -45,7 +45,7 @@
   <!-- Mammoth.js CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 
-  <!-- Embedded CSS -->
+  <!-- Custom Polished CSS -->
   <style>
     @keyframes tweakFocusPulse {
       0%, 100% { box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.4), 0 0 16px rgba(99, 102, 241, 0.3); }
@@ -54,18 +54,20 @@
     .diff-active-step {
       animation: tweakFocusPulse 2s infinite ease-in-out;
       border-radius: 4px;
-      outline: 2px solid #818CF8;
+      outline: 2px solid #818CF8 !important;
       outline-offset: 2px;
       position: relative;
       z-index: 10;
+      background-color: rgba(99, 102, 241, 0.25) !important;
     }
     mark.diff-add {
       background-color: rgba(16, 185, 129, 0.22);
       color: #34D399;
       padding: 2px 4px;
       border-radius: 4px;
-      border-bottom: 1.5px solid #10B981;
-      font-weight: 500;
+      border-bottom: 2px solid #10B981;
+      font-weight: 600;
+      display: inline-block;
       transition: all 0.2s ease;
     }
     mark.diff-add:hover { background-color: rgba(16, 185, 129, 0.4); }
@@ -75,8 +77,10 @@
       padding: 2px 4px;
       border-radius: 4px;
       text-decoration: line-through;
-      text-decoration-color: rgba(244, 63, 94, 0.8);
-      border-bottom: 1.5px dotted #F43F5E;
+      text-decoration-color: rgba(244, 63, 94, 0.9);
+      border-bottom: 2px dotted #F43F5E;
+      font-weight: 600;
+      display: inline-block;
       transition: all 0.2s ease;
     }
     mark.diff-del:hover { background-color: rgba(244, 63, 94, 0.4); }
@@ -98,7 +102,9 @@
       <!-- Brand Logo -->
       <div class="flex items-center space-x-3">
         <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/30">
-          <i data-lucide="file-diff" class="w-6 h-6 text-white"></i>
+          <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
         </div>
         <div>
           <span class="font-bold text-lg tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">Cami's Diff Scan</span>
@@ -108,20 +114,20 @@
 
       <!-- Center Nav Tabs -->
       <div class="flex items-center bg-slate-950/80 p-1 rounded-xl border border-slate-800 shadow-inner">
-        <button id="tab-file" class="flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 bg-indigo-600 text-white shadow-sm">
-          <i data-lucide="folder-git-2" class="w-4 h-4"></i>
+        <button onclick="setMode('file')" id="tab-file" class="flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 bg-indigo-600 text-white shadow-sm">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
           <span>Compare Files</span>
         </button>
-        <button id="tab-text" class="flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-900 transition-all duration-200">
-          <i data-lucide="align-left" class="w-4 h-4"></i>
+        <button onclick="setMode('text')" id="tab-text" class="flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-900 transition-all duration-200">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/></svg>
           <span>Direct Text</span>
         </button>
       </div>
 
-      <!-- Theme Toggle & Help -->
+      <!-- Theme Toggle & Demo Button -->
       <div class="flex items-center space-x-3">
-        <button id="btn-sample" class="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700">
-          <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400"></i>
+        <button onclick="loadSampleDemo()" class="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-md shadow-indigo-500/20 transition transform active:scale-95">
+          <svg class="w-3.5 h-3.5 text-amber-300 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
           <span>Load Resume Demo</span>
         </button>
       </div>
@@ -145,9 +151,9 @@
             <span class="text-xs text-slate-500">Supports .PDF, .DOCX, .TXT</span>
           </div>
           <label id="dropzone-1" class="cursor-pointer group border-2 border-dashed border-slate-800 hover:border-indigo-500/50 rounded-xl p-8 flex flex-col items-center justify-center text-center transition-all bg-slate-950/40 hover:bg-indigo-950/10 min-h-[220px]">
-            <input type="file" id="file-input-1" accept=".pdf,.docx,.txt" class="hidden" />
+            <input type="file" id="file-input-1" accept=".pdf,.docx,.txt" class="hidden" onchange="parseInputFile(this, 1)" />
             <div class="rounded-full bg-slate-800/80 p-4 mb-3 group-hover:scale-110 transition duration-300 group-hover:bg-indigo-600 text-slate-400 group-hover:text-white">
-              <i data-lucide="file-up" class="w-8 h-8"></i>
+              <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
             </div>
             <p id="file-label-1" class="text-sm font-medium text-slate-200 mb-1">Upload Older Version</p>
             <p id="file-sublabel-1" class="text-xs text-slate-500">Drag & drop or click to browse</p>
@@ -165,9 +171,9 @@
             <span class="text-xs text-slate-500">Supports .PDF, .DOCX, .TXT</span>
           </div>
           <label id="dropzone-2" class="cursor-pointer group border-2 border-dashed border-slate-800 hover:border-emerald-500/50 rounded-xl p-8 flex flex-col items-center justify-center text-center transition-all bg-slate-950/40 hover:bg-emerald-950/10 min-h-[220px]">
-            <input type="file" id="file-input-2" accept=".pdf,.docx,.txt" class="hidden" />
+            <input type="file" id="file-input-2" accept=".pdf,.docx,.txt" class="hidden" onchange="parseInputFile(this, 2)" />
             <div class="rounded-full bg-slate-800/80 p-4 mb-3 group-hover:scale-110 transition duration-300 group-hover:bg-emerald-600 text-slate-400 group-hover:text-white">
-              <i data-lucide="file-check-2" class="w-8 h-8"></i>
+              <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
             </div>
             <p id="file-label-2" class="text-sm font-medium text-slate-200 mb-1">Upload Newer Version</p>
             <p id="file-sublabel-2" class="text-xs text-slate-500">Drag & drop or click to browse</p>
@@ -183,24 +189,24 @@
         <div class="flex flex-col rounded-2xl border border-slate-800 bg-slate-900/40 p-5 shadow-xl backdrop-blur-sm">
           <div class="flex items-center justify-between mb-3">
             <span class="text-xs font-semibold text-rose-400 tracking-wider uppercase">Older Text</span>
-            <button id="btn-clear-1" class="text-xs text-slate-500 hover:text-slate-300">Clear</button>
+            <button onclick="clearText(1)" class="text-xs text-slate-500 hover:text-slate-300">Clear</button>
           </div>
-          <textarea id="textarea-1" placeholder="Paste earlier resume bullet points or document content here..." rows="8" class="w-full bg-slate-950 border border-slate-800/80 rounded-xl p-4 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-indigo-500 font-mono resize-none"></textarea>
+          <textarea id="textarea-1" oninput="onTextInput()" placeholder="Paste earlier resume bullet points or document content here..." rows="8" class="w-full bg-slate-950 border border-slate-800/80 rounded-xl p-4 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-indigo-500 font-mono resize-none"></textarea>
         </div>
         <div class="flex flex-col rounded-2xl border border-slate-800 bg-slate-900/40 p-5 shadow-xl backdrop-blur-sm">
           <div class="flex items-center justify-between mb-3">
             <span class="text-xs font-semibold text-emerald-400 tracking-wider uppercase">Newer Text (With Tweaks)</span>
-            <button id="btn-clear-2" class="text-xs text-slate-500 hover:text-slate-300">Clear</button>
+            <button onclick="clearText(2)" class="text-xs text-slate-500 hover:text-slate-300">Clear</button>
           </div>
-          <textarea id="textarea-2" placeholder="Paste updated resume bullet points or refined content here..." rows="8" class="w-full bg-slate-950 border border-slate-800/80 rounded-xl p-4 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-emerald-500 font-mono resize-none"></textarea>
+          <textarea id="textarea-2" oninput="onTextInput()" placeholder="Paste updated resume bullet points or refined content here..." rows="8" class="w-full bg-slate-950 border border-slate-800/80 rounded-xl p-4 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-emerald-500 font-mono resize-none"></textarea>
         </div>
       </div>
     </section>
 
     <!-- 3. COMPARISON RESULTS HEADER & STEPPER CONTROLS -->
-    <section id="section-results-header" class="flex flex-wrap items-center justify-between gap-4 p-5 rounded-2xl border border-slate-800 bg-gradient-to-r from-slate-900/80 to-slate-900/40 shadow-xl backdrop-blur-md">
+    <section class="flex flex-wrap items-center justify-between gap-4 p-5 rounded-2xl border border-slate-800 bg-gradient-to-r from-slate-900/80 to-slate-900/40 shadow-xl backdrop-blur-md">
       <div class="flex items-center space-x-4">
-        <div id="diff-status-indicator" class="flex items-center space-x-2">
+        <div class="flex items-center space-x-2">
           <span class="relative flex h-3 w-3">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
             <span class="relative inline-flex rounded-full h-3 w-3 bg-indigo-500"></span>
@@ -209,22 +215,26 @@
         </div>
         <div id="diff-metrics-pill" class="hidden items-center space-x-3 pl-4 border-l border-slate-700/80 text-xs font-medium">
           <span class="flex items-center text-emerald-400 bg-emerald-950/60 px-2.5 py-1 rounded-md border border-emerald-800/50">
-            <i data-lucide="plus" class="w-3.5 h-3.5 mr-1"></i> <span id="metric-add">0 Additions</span>
+            <span id="metric-add">0 Additions</span>
           </span>
           <span class="flex items-center text-rose-400 bg-rose-950/60 px-2.5 py-1 rounded-md border border-rose-800/50">
-            <i data-lucide="minus" class="w-3.5 h-3.5 mr-1"></i> <span id="metric-del">0 Deletions</span>
+            <span id="metric-del">0 Deletions</span>
           </span>
         </div>
       </div>
+
       <div class="flex flex-wrap items-center gap-3">
+        <!-- View Layout Switch -->
         <div class="flex items-center bg-slate-950 p-1 rounded-lg border border-slate-800 text-xs">
-          <button id="view-split" class="px-3 py-1.5 rounded-md font-medium bg-slate-800 text-white shadow-sm transition">Split Column</button>
-          <button id="view-unified" class="px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-white transition">Unified</button>
+          <button onclick="setView('split')" id="view-split" class="px-3 py-1.5 rounded-md font-medium bg-slate-800 text-white shadow-sm transition">Split Column</button>
+          <button onclick="setView('unified')" id="view-unified" class="px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-white transition">Unified</button>
         </div>
-        <div id="stepper-controls" class="hidden items-center space-x-1 bg-indigo-950/40 border border-indigo-700/50 rounded-lg p-1">
-          <span class="text-xs font-mono text-indigo-300 px-2.5 font-medium" id="stepper-counter">0 of 0 Tweaks</span>
-          <button id="btn-prev-diff" title="Previous Difference [Shortcut: Left Bracket]" class="p-1.5 hover:bg-indigo-600/30 rounded text-indigo-300 hover:text-white transition"><i data-lucide="arrow-up" class="w-4 h-4"></i></button>
-          <button id="btn-next-diff" title="Next Difference [Shortcut: Right Bracket]" class="p-1.5 bg-indigo-600 hover:bg-indigo-500 rounded text-white shadow transition"><i data-lucide="arrow-down" class="w-4 h-4"></i></button>
+
+        <!-- Interactive Stepper Controls -->
+        <div id="stepper-controls" class="hidden items-center space-x-1 bg-indigo-950/60 border border-indigo-600/60 rounded-xl px-2 py-1 shadow-inner">
+          <span class="text-xs font-mono text-indigo-300 px-2 font-bold tracking-wide" id="stepper-counter">0 of 0 Tweaks</span>
+          <button onclick="stepDiff('prev')" title="Previous Wording Tweak [Shortcut: [ ]" class="px-2.5 py-1.5 hover:bg-indigo-600 rounded-lg text-indigo-200 hover:text-white font-bold text-xs transition">&uarr; Prev</button>
+          <button onclick="stepDiff('next')" title="Next Wording Tweak [Shortcut: ] ]" class="px-2.5 py-1.5 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-white font-bold text-xs shadow-md transition">&darr; Next</button>
         </div>
       </div>
     </section>
@@ -238,7 +248,7 @@
         </div>
         <div id="render-older" class="p-6 whitespace-pre-wrap leading-relaxed overflow-x-auto min-h-[300px] text-slate-300 select-text">
           <div class="h-full flex flex-col items-center justify-center text-slate-600 py-12 text-center">
-            <i data-lucide="split" class="w-10 h-10 mb-3 stroke-[1.5]"></i>
+            <svg class="w-10 h-10 mb-3 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/></svg>
             <p class="text-xs font-sans">Upload two resumes or paste text above to instantly visualize subtractions.</p>
           </div>
         </div>
@@ -250,7 +260,7 @@
         </div>
         <div id="render-newer" class="p-6 whitespace-pre-wrap leading-relaxed overflow-x-auto min-h-[300px] text-slate-300 select-text">
           <div class="h-full flex flex-col items-center justify-center text-slate-600 py-12 text-center">
-            <i data-lucide="sparkles" class="w-10 h-10 mb-3 stroke-[1.5]"></i>
+            <svg class="w-10 h-10 mb-3 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
             <p class="text-xs font-sans">Upload two resumes or paste text above to instantly visualize subtle additions.</p>
           </div>
         </div>
@@ -271,237 +281,260 @@
   <footer class="border-t border-slate-800/80 py-6 text-center text-xs text-slate-600">
     <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
       <p>Cami's Diff Scan &copy; 2026. 100% Secure In-Browser Processing (No Uploads to Third-Party Servers).</p>
-      <div class="flex items-center space-x-4">
-        <span class="text-emerald-500 font-medium flex items-center"><span class="h-2 w-2 rounded-full bg-emerald-500 mr-1.5"></span> Fully Private</span>
-      </div>
+      <span class="text-emerald-500 font-semibold">Fully Private Client-Side App</span>
     </div>
   </footer>
 
-  <!-- Embedded Application Logic -->
+  <!-- Self-Contained Rock-Solid Processing Engine -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      lucide.createIcons();
+    // State variables
+    let textA = '';
+    let textB = '';
+    let diffNodes = [];
+    let currentStep = -1;
 
-      const tabFile = document.getElementById('tab-file');
-      const tabText = document.getElementById('tab-text');
-      const sectionFile = document.getElementById('section-file');
-      const sectionText = document.getElementById('section-text');
+    function setMode(mode) {
+      const tabF = document.getElementById('tab-file');
+      const tabT = document.getElementById('tab-text');
+      const secF = document.getElementById('section-file');
+      const secT = document.getElementById('section-text');
 
-      const fileInput1 = document.getElementById('file-input-1');
-      const fileInput2 = document.getElementById('file-input-2');
-      const fileLabel1 = document.getElementById('file-label-1');
-      const fileLabel2 = document.getElementById('file-label-2');
-      const extractedPreview1 = document.getElementById('extracted-preview-1');
-      const extractedPreview2 = document.getElementById('extracted-preview-2');
+      if (mode === 'file') {
+        tabF.className = 'flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 bg-indigo-600 text-white shadow-sm';
+        tabT.className = 'flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-900 transition-all duration-200';
+        secF.style.display = 'flex';
+        secT.style.display = 'none';
+      } else {
+        tabT.className = 'flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 bg-indigo-600 text-white shadow-sm';
+        tabF.className = 'flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-900 transition-all duration-200';
+        secT.style.display = 'flex';
+        secF.style.display = 'none';
+      }
+      compareEngine();
+    }
 
-      const textarea1 = document.getElementById('textarea-1');
-      const textarea2 = document.getElementById('textarea-2');
-      const btnClear1 = document.getElementById('btn-clear-1');
-      const btnClear2 = document.getElementById('btn-clear-2');
-      const btnSample = document.getElementById('btn-sample');
+    function setView(viewMode) {
+      const vSplit = document.getElementById('view-split');
+      const vUnified = document.getElementById('view-unified');
+      const oSplit = document.getElementById('output-split');
+      const oUnified = document.getElementById('output-unified');
 
-      const viewSplit = document.getElementById('view-split');
-      const viewUnified = document.getElementById('view-unified');
-      const outputSplit = document.getElementById('output-split');
-      const outputUnified = document.getElementById('output-unified');
+      if (viewMode === 'split') {
+        vSplit.className = 'px-3 py-1.5 rounded-md font-medium bg-slate-800 text-white shadow-sm transition';
+        vUnified.className = 'px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-white transition';
+        oSplit.style.display = 'grid';
+        oUnified.style.display = 'none';
+      } else {
+        vUnified.className = 'px-3 py-1.5 rounded-md font-medium bg-slate-800 text-white shadow-sm transition';
+        vSplit.className = 'px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-white transition';
+        oUnified.style.display = 'flex';
+        oSplit.style.display = 'none';
+      }
+    }
 
-      const renderOlder = document.getElementById('render-older');
-      const renderNewer = document.getElementById('render-newer');
-      const renderUnified = document.getElementById('render-unified');
+    function loadSampleDemo() {
+      const sampleOld = `ALEXANDER MERCER\nSenior Software Engineer | Cloud Platforms\nEmail: alex.mercer@gmail.com | Phone: (555) 123-4567\n\nEDUCATION\nB.S. in Computer Science - University of California, Berkeley\nGPA: 3.75 / 4.0\n\nPROFESSIONAL EXPERIENCE\nGoogle - Senior Platform Engineer (2022 - Present)\n- Designed highly scalable distributed microservices processing 450,000 requests per second.\n- Reduced overall tail latency by 18% through Redis cache optimization and connection pooling.\n- Led core infrastructure code reviews for 14 microservices.`;
+      const sampleNew = `ALEXANDER MERCER\nPrincipal Software Engineer | Cloud Infrastructure\nEmail: alex.mercer@gmail.com | Phone: (555) 123-4567\n\nEDUCATION\nB.S. in Computer Science - University of California, Berkeley\nGPA: 3.82 / 4.0 (Magna Cum Laude)\n\nPROFESSIONAL EXPERIENCE\nGoogle - Lead Staff Engineer (2022 - Present)\n- Architected resilient distributed microservices processing over 650,000 requests per second.\n- Reduced overall tail latency by 24% through advanced Spanner connection pooling.\n- Spearheaded zero-trust identity authentication rollout for 12,000 internal services.\n- Led core infrastructure code reviews for 18 microservices.`;
 
-      const diffStatusText = document.getElementById('diff-status-text');
-      const diffMetricsPill = document.getElementById('diff-metrics-pill');
-      const metricAdd = document.getElementById('metric-add');
-      const metricDel = document.getElementById('metric-del');
+      document.getElementById('textarea-1').value = sampleOld;
+      document.getElementById('textarea-2').value = sampleNew;
+      textA = sampleOld;
+      textB = sampleNew;
+      
+      setMode('text');
+    }
 
-      const stepperControls = document.getElementById('stepper-controls');
-      const stepperCounter = document.getElementById('stepper-counter');
-      const btnPrevDiff = document.getElementById('btn-prev-diff');
-      const btnNextDiff = document.getElementById('btn-next-diff');
+    function onTextInput() {
+      textA = document.getElementById('textarea-1').value;
+      textB = document.getElementById('textarea-2').value;
+      compareEngine();
+    }
 
-      let textBuffer1 = '';
-      let textBuffer2 = '';
-      let diffNodesOlder = [];
-      let diffNodesNewer = [];
-      let activeStepIndex = -1;
+    function clearText(index) {
+      if (index === 1) {
+        document.getElementById('textarea-1').value = '';
+        textA = '';
+      } else {
+        document.getElementById('textarea-2').value = '';
+        textB = '';
+      }
+      compareEngine();
+    }
 
-      tabFile.addEventListener('click', () => {
-        tabFile.className = 'flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 bg-indigo-600 text-white shadow-sm';
-        tabText.className = 'flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-900 transition-all duration-200';
-        sectionFile.classList.remove('hidden');
-        sectionFile.classList.add('flex');
-        sectionText.classList.remove('flex');
-        sectionText.classList.add('hidden');
-        compareAndRender();
-      });
+    async function parseInputFile(inputElement, targetIndex) {
+      const file = inputElement.files[0];
+      if (!file) return;
 
-      tabText.addEventListener('click', () => {
-        tabText.className = 'flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 bg-indigo-600 text-white shadow-sm';
-        tabFile.className = 'flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-900 transition-all duration-200';
-        sectionText.classList.remove('hidden');
-        sectionText.classList.add('flex');
-        sectionFile.classList.remove('flex');
-        sectionFile.classList.add('hidden');
-        compareAndRender();
-      });
+      const label = document.getElementById(`file-label-${targetIndex}`);
+      const preview = document.getElementById(`extracted-preview-${targetIndex}`);
 
-      viewSplit.addEventListener('click', () => {
-        viewSplit.className = 'px-3 py-1.5 rounded-md font-medium bg-slate-800 text-white shadow-sm transition';
-        viewUnified.className = 'px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-white transition';
-        outputSplit.style.display = 'grid';
-        outputUnified.style.display = 'none';
-      });
+      label.textContent = `Parsing ${file.name}...`;
+      preview.style.display = 'block';
+      preview.textContent = 'Decoding contents...';
 
-      viewUnified.addEventListener('click', () => {
-        viewUnified.className = 'px-3 py-1.5 rounded-md font-medium bg-slate-800 text-white shadow-sm transition';
-        viewSplit.className = 'px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-white transition';
-        outputUnified.style.display = 'flex';
-        outputSplit.style.display = 'none';
-      });
+      try {
+        let text = '';
+        const ext = file.name.split('.').pop().toLowerCase();
 
-      async function parseFileContent(file, targetBufferIndex, labelElement, previewElement) {
-        if (!file) return;
-        labelElement.textContent = `Parsing ${file.name}...`;
-        previewElement.classList.remove('hidden');
-        previewElement.textContent = `Extracting pure text from [${file.name}]...`;
-
-        try {
-          let extractedText = '';
-          const extension = file.name.split('.').pop().toLowerCase();
-
-          if (extension === 'pdf') {
-            const arrayBuffer = await file.arrayBuffer();
-            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-            for (let i = 1; i <= pdf.numPages; i++) {
-              const page = await pdf.getPage(i);
-              const content = await page.getTextContent();
-              extractedText += content.items.map(item => item.str).join(' ') + '\n\n';
-            }
-          } else if (extension === 'docx') {
-            const arrayBuffer = await file.arrayBuffer();
-            const result = await mammoth.extractRawText({ arrayBuffer });
-            extractedText = result.value;
-          } else {
-            extractedText = await file.text();
+        if (ext === 'pdf' && typeof pdfjsLib !== 'undefined') {
+          const buf = await file.arrayBuffer();
+          const doc = await pdfjsLib.getDocument({ data: buf }).promise;
+          for (let i = 1; i <= doc.numPages; i++) {
+            const page = await doc.getPage(i);
+            const content = await page.getTextContent();
+            text += content.items.map(item => item.str).join(' ') + '\n\n';
           }
+        } else if (ext === 'docx' && typeof mammoth !== 'undefined') {
+          const buf = await file.arrayBuffer();
+          const res = await mammoth.extractRawText({ arrayBuffer: buf });
+          text = res.value;
+        } else {
+          text = await file.text();
+        }
 
-          if (targetBufferIndex === 1) textBuffer1 = extractedText.trim();
-          else textBuffer2 = extractedText.trim();
+        if (targetIndex === 1) textA = text.trim();
+        else textB = text.trim();
 
-          labelElement.textContent = file.name;
-          previewElement.textContent = extractedText.substring(0, 180) + '...';
-          compareAndRender();
-        } catch (err) {
-          labelElement.textContent = 'Parsing Failed';
-          previewElement.textContent = `Error: ${err.message}`;
+        label.textContent = file.name;
+        preview.textContent = text.substring(0, 150) + '...';
+        compareEngine();
+      } catch (e) {
+        label.textContent = 'Parsing Error';
+        preview.textContent = `Failed: ${e.message}`;
+      }
+    }
+
+    // Advanced Fallback-Protected Diffing Calculation
+    function computeDiffs(s1, s2) {
+      if (typeof Diff !== 'undefined' && typeof Diff.diffWordsWithSpace === 'function') {
+        try {
+          return Diff.diffWordsWithSpace(s1, s2);
+        } catch (e) {
+          console.warn('jsdiff error, using fallback:', e);
         }
       }
-
-      fileInput1.addEventListener('change', e => parseFileContent(e.target.files[0], 1, fileLabel1, extractedPreview1));
-      fileInput2.addEventListener('change', e => parseFileContent(e.target.files[0], 2, fileLabel2, extractedPreview2));
-
-      textarea1.addEventListener('input', () => { textBuffer1 = textarea1.value; compareAndRender(); });
-      textarea2.addEventListener('input', () => { textBuffer2 = textarea2.value; compareAndRender(); });
-
-      btnClear1.addEventListener('click', () => { textarea1.value = ''; textBuffer1 = ''; compareAndRender(); });
-      btnClear2.addEventListener('click', () => { textarea2.value = ''; textBuffer2 = ''; compareAndRender(); });
-
-      btnSample.addEventListener('click', () => {
-        const sampleOld = `ALEXANDER MERCER\nSenior Software Engineer | Cloud Platforms\nEmail: alex.mercer@gmail.com | Phone: (555) 123-4567\n\nEDUCATION\nB.S. in Computer Science - University of California, Berkeley\nGPA: 3.75 / 4.0\n\nPROFESSIONAL EXPERIENCE\nGoogle - Senior Platform Engineer (2022 - Present)\n- Designed highly scalable distributed microservices processing 450,000 requests per second.\n- Reduced overall tail latency by 18% through Redis cache optimization and connection pooling.`;
-        const sampleNew = `ALEXANDER MERCER\nPrincipal Software Engineer | Cloud Infrastructure\nEmail: alex.mercer@gmail.com | Phone: (555) 123-4567\n\nEDUCATION\nB.S. in Computer Science - University of California, Berkeley\nGPA: 3.82 / 4.0 (Magna Cum Laude)\n\nPROFESSIONAL EXPERIENCE\nGoogle - Lead Staff Engineer (2022 - Present)\n- Architected resilient distributed microservices processing over 650,000 requests per second.\n- Reduced overall tail latency by 24% through advanced Spanner connection pooling.\n- Spearheaded zero-trust identity authentication rollout for 12,000 internal services.`;
-        textBuffer1 = sampleOld;
-        textBuffer2 = sampleNew;
-        textarea1.value = sampleOld;
-        textarea2.value = sampleNew;
-        tabText.dispatchEvent(new Event('click'));
-      });
-
-      function compareAndRender() {
-        const t1 = (textBuffer1 || '').trim();
-        const t2 = (textBuffer2 || '').trim();
-
-        if (!t1 && !t2) {
-          diffStatusText.textContent = 'Awaiting Input Documents';
-          diffMetricsPill.style.display = 'none';
-          stepperControls.style.display = 'none';
-          renderOlder.innerHTML = `<div class="h-full flex flex-col items-center justify-center text-slate-600 py-12 text-center"><i data-lucide="split" class="w-10 h-10 mb-3 stroke-[1.5]"></i><p class="text-xs font-sans">Upload older resume or paste text above to compare.</p></div>`;
-          renderNewer.innerHTML = `<div class="h-full flex flex-col items-center justify-center text-slate-600 py-12 text-center"><i data-lucide="sparkles" class="w-10 h-10 mb-3 stroke-[1.5]"></i><p class="text-xs font-sans">Upload newer resume or paste text above to spot tweaks.</p></div>`;
-          renderUnified.innerHTML = '';
-          lucide.createIcons();
-          return;
+      
+      // Resilient Fallback Word Diff (Guarantees execution even if CDN is blocked)
+      const words1 = s1.split(/(\s+)/);
+      const words2 = s2.split(/(\s+)/);
+      let out = [];
+      let maxLen = Math.max(words1.length, words2.length);
+      for (let i = 0; i < maxLen; i++) {
+        const w1 = words1[i] || '';
+        const w2 = words2[i] || '';
+        if (w1 === w2) {
+          if (w1) out.push({ value: w1 });
+        } else {
+          if (w1) out.push({ value: w1, removed: true });
+          if (w2) out.push({ value: w2, added: true });
         }
+      }
+      return out;
+    }
 
-        diffStatusText.textContent = 'Comparing...';
-        const diffChunks = Diff.diffWordsWithSpace(t1, t2);
+    function compareEngine() {
+      const s1 = textA || '';
+      const s2 = textB || '';
 
-        let additionsCount = 0, deletionsCount = 0;
-        let olderHTML = '', newerHTML = '', unifiedHTML = '';
-        diffNodesOlder = [];
-        diffNodesNewer = [];
-        let index = 0;
+      const stText = document.getElementById('diff-status-text');
+      const stMetrics = document.getElementById('diff-metrics-pill');
+      const stControls = document.getElementById('stepper-controls');
+      const rOld = document.getElementById('render-older');
+      const rNew = document.getElementById('render-newer');
+      const rUni = document.getElementById('render-unified');
 
-        diffChunks.forEach(chunk => {
-          const escaped = chunk.value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-          if (chunk.added) {
-            if (chunk.value.trim()) additionsCount += chunk.value.trim().split(/\s+/).length;
-            newerHTML += `<mark id="newer-tweak-${index}" class="diff-add">${escaped}</mark>`;
-            unifiedHTML += `<mark class="diff-add">${escaped}</mark>`;
-            diffNodesNewer.push(`newer-tweak-${index}`);
-            index++;
-          } else if (chunk.removed) {
-            if (chunk.value.trim()) deletionsCount += chunk.value.trim().split(/\s+/).length;
-            olderHTML += `<mark id="older-tweak-${index}" class="diff-del">${escaped}</mark>`;
-            unifiedHTML += `<mark class="diff-del">${escaped}</mark>`;
-            diffNodesOlder.push(`older-tweak-${index}`);
-            index++;
+      if (!s1.trim() && !s2.trim()) {
+        stText.textContent = 'Awaiting Documents';
+        stMetrics.style.display = 'none';
+        stControls.style.display = 'none';
+        rOld.innerHTML = `<div class="h-full flex flex-col items-center justify-center text-slate-600 py-12 text-center"><p class="text-xs font-sans">Upload older resume or paste text above to compare.</p></div>`;
+        rNew.innerHTML = `<div class="h-full flex flex-col items-center justify-center text-slate-600 py-12 text-center"><p class="text-xs font-sans">Upload newer resume or paste text above to spot tweaks.</p></div>`;
+        rUni.innerHTML = '';
+        return;
+      }
+
+      stText.textContent = 'Analyzing Differences...';
+
+      try {
+        const chunks = computeDiffs(s1, s2);
+        let adds = 0, dels = 0;
+        let oHtml = '', nHtml = '', uHtml = '';
+        diffNodes = [];
+        let tIndex = 0;
+
+        chunks.forEach(ch => {
+          const esc = ch.value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          const isNotBlank = ch.value.trim().length > 0;
+
+          if (ch.added) {
+            if (isNotBlank) adds += ch.value.trim().split(/\s+/).length;
+            const tid = `tweak-${tIndex++}`;
+            nHtml += `<mark id="${tid}" class="diff-add">${esc}</mark>`;
+            uHtml += `<mark class="diff-add">${esc}</mark>`;
+            diffNodes.push(tid);
+          } else if (ch.removed) {
+            if (isNotBlank) dels += ch.value.trim().split(/\s+/).length;
+            const tid = `tweak-${tIndex++}`;
+            oHtml += `<mark id="${tid}" class="diff-del">${esc}</mark>`;
+            uHtml += `<mark class="diff-del">${esc}</mark>`;
+            diffNodes.push(tid);
           } else {
-            olderHTML += escaped; newerHTML += escaped; unifiedHTML += escaped;
+            oHtml += esc; nHtml += esc; uHtml += esc;
           }
         });
 
-        renderOlder.innerHTML = olderHTML;
-        renderNewer.innerHTML = newerHTML;
-        renderUnified.innerHTML = unifiedHTML;
+        rOld.innerHTML = oHtml;
+        rNew.innerHTML = nHtml;
+        rUni.innerHTML = uHtml;
 
-        diffMetricsPill.style.display = 'flex';
-        metricAdd.textContent = `${additionsCount} Words Added`;
-        metricDel.textContent = `${deletionsCount} Words Removed`;
+        stMetrics.style.display = 'flex';
+        document.getElementById('metric-add').textContent = `${adds} Words Added`;
+        document.getElementById('metric-del').textContent = `${dels} Words Removed`;
 
-        const total = diffNodesNewer.length + diffNodesOlder.length;
-        if (total === 0) {
-          diffStatusText.textContent = 'Documents are 100% Identical';
-          stepperControls.style.display = 'none';
+        if (diffNodes.length === 0) {
+          stText.textContent = 'Documents are 100% Identical';
+          stControls.style.display = 'none';
         } else {
-          diffStatusText.textContent = `${total} Wording Tweaks Detected`;
-          stepperControls.style.display = 'flex';
-          stepperCounter.textContent = `0 of ${total}`;
-          activeStepIndex = -1;
+          stText.textContent = `${diffNodes.length} Wording Tweaks Detected`;
+          stControls.style.display = 'flex';
+          document.getElementById('stepper-counter').textContent = `0 of ${diffNodes.length}`;
+          currentStep = -1;
         }
+      } catch (err) {
+        console.error('Diff Engine Error:', err);
+        stText.textContent = `Error: ${err.message}`;
+      }
+    }
+
+    function stepDiff(dir) {
+      if (!diffNodes.length) return;
+
+      document.querySelectorAll('.diff-active-step').forEach(m => m.classList.remove('diff-active-step'));
+
+      if (dir === 'next') {
+        currentStep = (currentStep + 1) % diffNodes.length;
+      } else {
+        currentStep = (currentStep - 1 + diffNodes.length) % diffNodes.length;
       }
 
-      function stepTo(direction) {
-        const combined = [...diffNodesOlder, ...diffNodesNewer];
-        if (!combined.length) return;
-        document.querySelectorAll('.diff-active-step').forEach(n => n.classList.remove('diff-active-step'));
-        if (direction === 'next') activeStepIndex = (activeStepIndex + 1) % combined.length;
-        else activeStepIndex = (activeStepIndex - 1 + combined.length) % combined.length;
-        stepperCounter.textContent = `${activeStepIndex + 1} of ${combined.length}`;
-        const el = document.getElementById(combined[activeStepIndex]);
-        if (el) {
-          el.classList.add('diff-active-step');
-          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
+      document.getElementById('stepper-counter').textContent = `${currentStep + 1} of ${diffNodes.length}`;
+
+      const markElement = document.getElementById(diffNodes[currentStep]);
+      if (markElement) {
+        markElement.classList.add('diff-active-step');
+        markElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
+    }
 
-      btnNextDiff.addEventListener('click', () => stepTo('next'));
-      btnPrevDiff.addEventListener('click', () => stepTo('prev'));
-
-      document.addEventListener('keydown', e => {
-        if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
-        if (e.key === ']' || e.key === 'ArrowDown') { e.preventDefault(); stepTo('next'); }
-        if (e.key === '[' || e.key === 'ArrowUp') { e.preventDefault(); stepTo('prev'); }
-      });
+    // Keyboard Shortcuts
+    document.addEventListener('keydown', e => {
+      if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+      if (e.key === ']' || e.key === 'ArrowDown') { e.preventDefault(); stepDiff('next'); }
+      if (e.key === '[' || e.key === 'ArrowUp') { e.preventDefault(); stepDiff('prev'); }
     });
+
+    // Ensure first render settles
+    setTimeout(() => compareEngine(), 100);
   </script>
 </body>
 </html>
